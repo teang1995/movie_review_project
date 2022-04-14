@@ -11,8 +11,10 @@
 
 `cd movie_review_project`
 
-3. run server
+3. dockerfile build
+
+`docker build -t spring_docker_test:v0.1 .`
+
+4. run server
 
 `sh run_server.sh`
-
-
