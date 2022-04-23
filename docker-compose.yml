@@ -1,0 +1,45 @@
+version: "3"
+services:
+ db:
+  # platform: linux/x86_64
+  build:
+   context: .
+   dockerfile: ./dockerfiles/mysql/Dockerfile
+  hostname: mysql_host
+  ports:
+   - 3306:3306/tcp
+  env_file:
+   - ./.envs/.env.prod.db
+  networks:
+   - my_network
+ spring:
+  build:
+   context: .
+   dockerfile: ./dockerfiles/spring/Dockerfile
+  env_file:
+   - ./.envs/.env.prod
+  volumes:
+   - .:/code
+  ports:
+   - 8080:8080/tcp
+  expose:
+   - 8080
+  networks:
+   - my_network
+  depends_on:
+   - db
+  command: bash -c "
+   cd /code/hello-spring &&
+   ./gradlew build &&
+   java -jar /code/hello-spring/build/libs/*"
+networks:
+ my_network:
+  driver: bridge
+
+
+
+
+
+
+
+
